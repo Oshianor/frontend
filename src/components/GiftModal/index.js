@@ -7,7 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import { connect } from "react-redux";
-import { toggleGift, toggleRefresh } from "../../store/actions";
+import { toggleGift } from "../../store/actions";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -40,8 +40,7 @@ const mapStateToProps = (state) => {
 
 
 const mapDispatchToProps = {
-  toggleGift,
-  toggleRefresh
+  toggleGift
 };
 
 

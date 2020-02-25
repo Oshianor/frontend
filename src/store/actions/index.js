@@ -5,7 +5,10 @@ import {
   X_AUTH_TOKEN,
   OPEN_GIFT,
   SET_TOPIC_ID,
-  TOGGLE_REFRESH
+  SET_SINGLE_TOPIC,
+  TOGGLE_COMMENT,
+  GET_COMMENTS,
+  SET_CURRENT_COMMENT_PAGE
 } from "../types/types";
 
 
@@ -24,6 +27,13 @@ export const setCurrentPage = (payload) => {
     payload
   };
 }
+export const setSingleTopic = payload => {
+  return {
+    type: SET_SINGLE_TOPIC,
+    payload
+  };
+};
+
 
 
 
@@ -57,8 +67,33 @@ export const setTopicId = (payload) => {
     payload
   };
 }
-export const toggleRefresh = () => {
+// export const toggleRefresh = () => {
+//   return {
+//     type: TOGGLE_REFRESH
+//   }
+// }
+
+
+
+// comment
+export const setComment = (payload) => {
   return {
-    type: TOGGLE_REFRESH
-  }
+    type: GET_COMMENTS,
+    payload
+  };
 }
+
+export const setCurrenPageComment = payload => {
+  return {
+    type: SET_CURRENT_COMMENT_PAGE,
+    payload
+  };
+};
+
+
+export const setToggleComment = payload => {
+  return {
+    type: TOGGLE_COMMENT,
+    payload
+  };
+};

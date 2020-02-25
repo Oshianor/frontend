@@ -4,15 +4,15 @@ import { config } from '../../../../config';
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import { toggleRefresh } from "../../../store/actions";
+// import { toggleRefresh } from "../../../store/actions";
 
 const mapStateToProps = (state) => ({
   gift: state.gift
 });
 
-const mapDispatchToProps = {
-  toggleRefresh
-};
+// const mapDispatchToProps = {
+//   toggleRefresh
+// };
 
 class DisplayTips extends Component {
 	// const [tips, setTips] = useState(null);
@@ -110,6 +110,5 @@ const styles = theme => ({
 });
 
 export default connect(
-  mapStateToProps,
-mapDispatchToProps
+  mapStateToProps
 )(withStyles(styles)(DisplayTips));

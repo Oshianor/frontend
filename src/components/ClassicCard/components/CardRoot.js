@@ -25,8 +25,8 @@ import Share from "./Share";
 import DisplayTips from "./DisplayTips";
 import Divider from "@material-ui/core/Divider";
 import { config } from "../../../../config";
-
-
+import { nutralizeTitle } from "../../../util"
+import TagButton from "../../TagButton"
 
 const mapDispatchToProps = {
   toggleGift
@@ -70,6 +70,15 @@ const CardRoot = (props) => {
     }
   }
 
+
+  const handleTagRender = () => {
+    return (
+      topic.tags.map(tag => (
+        <TagButton name={tag} />
+      ))
+    )
+  }
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -99,10 +108,17 @@ const CardRoot = (props) => {
         subheader={moment(topic.createdAt).fromNow()}
       />
       <CardContent>
-        <Typography variant="h6" color="textPrimary" component="a" align="left">
+        <Typography
+          variant="h6"
+          href={"/topics/" + topic._id + "/" + nutralizeTitle(topic.title)}
+          color="primary"
+          component="a"
+          align="left"
+        >
           {topic.title}
         </Typography>
       </CardContent>
+      <div className={classes.tag} >{handleTagRender()}</div>
       {handleRenderObject(topic.type)}
       <CardContent>
         <Typography
@@ -177,6 +193,13 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "flex-start",
     alignItems: "flex-start",
     flexDirection: "column"
+  },
+  tag: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "wrap"
   }
 }));
 

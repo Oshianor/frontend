@@ -1,10 +1,11 @@
-import { GET_TOPICS, SET_CURRENT_PAGE } from "../types/types";
+import { GET_TOPICS, SET_CURRENT_PAGE, SET_SINGLE_TOPIC } from "../types/types";
 
 const initialstate = {
   currentPage: 1,
   page: 0,
   topics: [],
-  total: 0
+  total: 0,
+  singleTopic: null
 };
 
 export default (state = initialstate, action) => {
@@ -15,10 +16,14 @@ export default (state = initialstate, action) => {
         page: action.payload.page,
         total: action.payload.total
       });
-    case SET_CURRENT_PAGE: 
+    case SET_CURRENT_PAGE:
       return Object.assign({}, state, {
         currentPage: action.payload
-      }); 
+      });
+    case SET_SINGLE_TOPIC:
+      return Object.assign({}, state, {
+        singleTopic: action.payload
+      });
     default:
       return state;
   }
