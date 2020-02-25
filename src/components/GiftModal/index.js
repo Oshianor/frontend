@@ -7,7 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import { connect } from "react-redux";
-import { toggleGift } from "../../store/actions";
+import { toggleGift, toggleRefresh } from "../../store/actions";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -19,6 +19,11 @@ import {
 } from "@material-ui/core/styles";
 import InputBase from "@material-ui/core/InputBase";
 import InputLabel from "@material-ui/core/InputLabel";
+import { config } from "../../../config";
+import axios from "axios";
+import Alert from "@material-ui/lab/Alert";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Router from "next/router";
 
 
 
@@ -28,26 +33,92 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const mapStateToProps = (state) => {
 	return {
+		user: state.user,
 		gift: state.gift
 	}
 }
 
 
 const mapDispatchToProps = {
-  toggleGift
+  toggleGift,
+  toggleRefresh
 };
 
 
+const nameIcon = {
+  dogecoin: "/static/tipcoins/doge.svg",
+  bitcoin: "/static/tipcoins/bit.svg",
+  ethcoin: "/static/tipcoins/eth.svg",
+  ethtipcoin: "/static/tipcoins/tip-small.png",
+  ethtipc: "/static/tipcoins/tipc-small.png",
+  ethxrtcoin: "/static/tipcoins/xrt-small.png"
+};
+
 const GiftModal = (props) => {
-	const { gift, toggleGift } = props;
+	const { gift, toggleGift, user, toggleRefresh } = props;
 	const classes = useStyles()
 	const [coin, setCoin] = useState("bitcoin");
+	const [loading, setLoading] = useState(false);
+  const [amount, setAmount] = useState(0);
+  const [res, setRes] = useState({
+    err: false,
+    msg: "",
+    status: ""
+  })
 
 
 	const handleGift = async () => {
-	
-		toggleGift();
-	}
+    try {
+      setLoading(true);
+      const trans = await axios.post(config.tipPost, { amount, coin, topicId: gift.topicId }, { headers: { "x-auth-token": user.token } })
+
+      console.log("trans", trans);
+      
+      setLoading(false);
+      setAmount(0)
+
+      Router.reload();
+
+      toggleGift();
+      // toggleRefresh();
+      
+
+    } catch (error) {
+      setLoading(false);
+      console.log("error", error);
+      setRes({
+        err: true,
+        msg: error.response.data,
+        status: "warning"
+      })
+    }
+  }
+
+
+  const renderBalance = () => {
+    switch (coin) {
+      case "dogecoin":
+        return user.user.doge.balance;
+      case "bitcoin":
+        return user.user.btc.balance;
+      case "ethcoin":
+        return user.user.eth.ethApiBalance;
+      case "ethtipcoin":
+        return user.user.eth.tipcoinApiBalance;
+      case "ethxrtcoin":
+        return user.user.eth.xrtApiBalance;
+      case "ethtipc":
+        return user.user.eth.tipccoinApiBalance;
+      default:
+        break;
+    }
+  }
+
+
+  const handleAmount = (event) => {
+    setAmount(event.target.value);
+  }
+  
 
   return (
     <Dialog
@@ -61,74 +132,86 @@ const GiftModal = (props) => {
     >
       <DialogTitle id="alert-dialog-slide-title">Gift</DialogTitle>
       <DialogContent className={classes.root}>
-      <div>
-        <Typography>Choose Currency</Typography>
-        <div className={classes.iconRoot}>
-          <img
-            src="/static/tipcoins/bit.svg"
-            alt="btc"
-            onClick={() => setCoin("bitcoin")}
-            className={clsx(
-              classes.img,
-              coin === "bitcoin" && classes.selected
-            )}
-          />
-          <img
-            src="/static/tipcoins/doge.svg"
-            alt="doge"
-            onClick={() => setCoin("dogecoin")}
-            className={clsx(
-              classes.img,
-              coin === "dogecoin" && classes.selected
-            )}
-          />
-          <img
-            src="/static/tipcoins/eth.svg"
-            onClick={() => setCoin("ethcoin")}
-            alt="tipcoin"
-            className={clsx(
-              classes.img,
-              coin === "ethcoin" && classes.selected
-            )}
-          />
-          <img
-            src="/static/tipcoins/tip-small.png"
-            alt="tipcoin"
-            onClick={() => setCoin("ethtipc")}
-            className={clsx(
-              classes.img,
-              coin === "ethtipc" && classes.selected
-            )}
-          />
-          <img
-            src="/static/tipcoins/tipc-small.png"
-            alt="tipcoin"
-            onClick={() => setCoin("ethtipcoin")}
-            className={clsx(
-              classes.img,
-              coin === "ethtipcoin" && classes.selected
-            )}
-          />
-          <img
-            src="/static/tipcoins/xrt-small.png"
-            alt="tipcoin"
-            onClick={() => setCoin("ethxrtcoin")}
-            className={clsx(
-              classes.img,
-              coin === "ethxrtcoin" && classes.selected
-            )}
-          />
+        {res.err && <Alert severity={res.status}>{res.msg}</Alert>}
+        <div>
+          <div className={classes.header}>
+            <Typography>Choose Currency</Typography>
+            <div className={classes.balance}>
+              <img src={nameIcon[coin]} className={classes.balanceImg} />
+              <Typography>{renderBalance()}</Typography>
+            </div>
+          </div>
+          <div className={classes.iconRoot}>
+            <img
+              src="/static/tipcoins/bit.svg"
+              alt="btc"
+              onClick={() => setCoin("bitcoin")}
+              className={clsx(
+                classes.img,
+                coin === "bitcoin" && classes.selected
+              )}
+            />
+            <img
+              src="/static/tipcoins/doge.svg"
+              alt="doge"
+              onClick={() => setCoin("dogecoin")}
+              className={clsx(
+                classes.img,
+                coin === "dogecoin" && classes.selected
+              )}
+            />
+            <img
+              src="/static/tipcoins/eth.svg"
+              onClick={() => setCoin("ethcoin")}
+              alt="tipcoin"
+              className={clsx(
+                classes.img,
+                coin === "ethcoin" && classes.selected
+              )}
+            />
+            <img
+              src="/static/tipcoins/tip-small.png"
+              alt="tipcoin"
+              onClick={() => setCoin("ethtipcoin")}
+              className={clsx(
+                classes.img,
+                coin === "ethtipcoin" && classes.selected
+              )}
+            />
+            <img
+              src="/static/tipcoins/tipc-small.png"
+              alt="tipcoin"
+              onClick={() => setCoin("ethtipc")}
+              className={clsx(
+                classes.img,
+                coin === "ethtipc" && classes.selected
+              )}
+            />
+            <img
+              src="/static/tipcoins/xrt-small.png"
+              alt="tipcoin"
+              onClick={() => setCoin("ethxrtcoin")}
+              className={clsx(
+                classes.img,
+                coin === "ethxrtcoin" && classes.selected
+              )}
+            />
+          </div>
         </div>
-      </div>
         <Divider />
 
-        {/* <DialogContentText id="alert-dialog-slide-description">
-          Let Google help apps determine location. This means sending anonymous
-          location data to Google, even when no apps are running.
-        </DialogContentText> */}
+        {/* 
+          <DialogContentText id="alert-dialog-slide-description">
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+          </DialogContentText> 
+        */}
+
         <AmountInput
-					className={classes.margin}
-					autoFocus={true}
+          className={classes.margin}
+          autoFocus={true}
+          onChange={handleAmount}
+          value={amount}
           label="Custom CSS"
           variant="outlined"
           id="custom-css-outlined-input"
@@ -138,8 +221,8 @@ const GiftModal = (props) => {
         <Button onClick={() => toggleGift()} color="default" variant="outlined">
           Cancel
         </Button>
-        <Button onClick={handleGift} color="primary" variant="contained">
-          Gift
+        <Button disabled={loading} onClick={handleGift} color="primary" variant="contained">
+          {loading ? <CircularProgress /> : "Gift"}
         </Button>
       </DialogActions>
     </Dialog>
@@ -172,6 +255,20 @@ const useStyles = makeStyles(theme => ({
   },
   selected: {
     backgroundColor: "#50557b"
+  },
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  balance: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row"
+  },
+  balanceImg: {
+    width: 15
   }
 }));
 

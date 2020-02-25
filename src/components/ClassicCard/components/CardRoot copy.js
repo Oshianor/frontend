@@ -132,11 +132,7 @@ const CardRoot = (props) => {
         <>
           <Divider />
           <CardActions disableSpacing>
-            <DisplayTips
-              topicId={topic._id}
-              tips={tips}
-              handleSetTips={setTips}
-            />
+            <DisplayTips topicId={topic._id} tips={tips} />
           </CardActions>
         </>
       )}

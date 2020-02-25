@@ -22,49 +22,56 @@ export default TagButton;
 
 
 const useStyles = makeStyles(({ spacing, palette }) => ({
-	box: {
-		marginRight: 5
-	},
+  box: {
+    marginRight: 10,
+    marginLeft: 10,
+    "&:hover": {
+      marginLeft: 3,
+      marginRight: 3
+    }
+  },
   root: {
-		backgroundColor: palette.grey[100],
-		'&:hover, &.Mui-focusVisible': {
-			backgroundColor: Color(palette.primary.light).lighten(0.5).toString(),
-			color: palette.primary.dark,
-			'& $icon': {
-				color: palette.primary.dark,
-				marginLeft: spacing(1),
-				visibility: 'visible',
-				opacity: 1,
-			},
-			'& $overline': {
-				color: Color(palette.primary.dark)
-					.fade(0.3)
-					.toString(),
-			},
-		},
-	},
-	label: {
-		transition: '0.2s',
-		textTransform: 'initial',
-	},
-	icon: {
-		fontSize: 18,
-		visibility: 'hidden',
-		opacity: 0,
-		transition: '0.3s',
-		color: palette.common.white,
-		marginLeft: -spacing(1.5),
-		'& .MuiIcon--fa': {
-			padding: 0,
-		},
-	},
-	overline: {
-		display: 'block',
-		lineHeight: 1,
-		fontSize: 10,
-		textAlign: 'left',
-		textTransform: 'uppercase',
-		marginTop: 4,
-		color: palette.text.secondary,
-	},
+    backgroundColor: palette.grey[100],
+    "&:hover, &.Mui-focusVisible": {
+      backgroundColor: Color(palette.primary.light)
+        .lighten(0.5)
+        .toString(),
+      color: palette.primary.dark,
+      "& $icon": {
+        color: palette.primary.dark,
+        marginLeft: spacing(1),
+        visibility: "visible",
+        opacity: 1
+      },
+      "& $overline": {
+        color: Color(palette.primary.dark)
+          .fade(0.3)
+          .toString()
+      }
+    }
+  },
+  label: {
+    transition: "0.2s",
+    textTransform: "initial"
+  },
+  icon: {
+    fontSize: 18,
+    visibility: "hidden",
+    opacity: 0,
+    transition: "0.3s",
+    color: palette.common.white,
+    marginLeft: -spacing(1.5),
+    "& .MuiIcon--fa": {
+      padding: 0
+    }
+  },
+  overline: {
+    display: "block",
+    lineHeight: 1,
+    fontSize: 10,
+    textAlign: "left",
+    textTransform: "uppercase",
+    marginTop: 4,
+    color: palette.text.secondary
+  }
 }));

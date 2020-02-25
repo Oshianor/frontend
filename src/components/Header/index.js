@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -6,9 +6,83 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import Fab from "@material-ui/core/Fab";
+import { connect } from "react-redux";
+import { setUserData } from "../../store/actions"
 
-export default function ButtonAppBar() {
+
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+
+const mapDispatchToProps = {
+  setUserData
+};
+
+
+const Header = (props) => {
   const classes = useStyles();
+  const { user, setUserData } = props;
+
+
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    setUserData(null)
+  }
+
+  const loggedIn = () => {
+    return (
+      <>
+        <div className={classes.user}>
+          <Typography variant="overline" className={classes.username}>
+            @
+          </Typography>
+          <Typography
+            variant="overline"
+            className={classes.username}
+            component="a"
+            href={"/p/" + user.user.username}
+          >
+            {user.user.username}
+          </Typography>
+        </div>
+        <Fab
+          variant="extended"
+          size="small"
+          // color="primary"
+          onClick={handleLogOut}
+          aria-label="Log Out"
+          className={classes.margin}
+        >
+          Log Out
+        </Fab>
+      </>
+    );
+  }
+
+
+  const notLoggedIn = () => {
+    return (
+      <>
+        <Button href="/login" color="inherit" size="small">
+          Login
+        </Button>
+        <Fab
+          variant="extended"
+          size="small"
+          href="/register"
+          color="secondary"
+          aria-label="add"
+          className={classes.margin}
+        >
+          Join Us
+        </Fab>
+      </>
+    );
+  }
+
+  // *131#
+
 
   return (
     <AppBar position="static" elevation={1} className={classes.root}>
@@ -16,19 +90,13 @@ export default function ButtonAppBar() {
         <Toolbar>
           <img src="/static/tipcoins/tip-large.png" className={classes.logo} />
           <div className={classes.title} />
-          <Button href="/login" color="inherit" size="small">
-            Login
-          </Button>
-          <Fab
-            variant="extended"
-            size="small"
-            href="/register"
-            color="secondary"
-            aria-label="add"
-            className={classes.margin}
-          >
-            Sign Up
-          </Fab>
+          {
+            user.user ? (
+              loggedIn()
+            ) : (
+              notLoggedIn()
+            )
+          }
         </Toolbar>
       </Container>
     </AppBar>
@@ -36,11 +104,12 @@ export default function ButtonAppBar() {
 }
 
 
+export default connect(mapStateToProps, mapDispatchToProps)(Header)
 
 const useStyles = makeStyles(theme => ({
   root: {
-		// flexGrow: 1
-		// backgroundColor: "transparent"
+    // flexGrow: 1
+    // backgroundColor: "transparent"
   },
   menuButton: {
     marginRight: theme.spacing(2)
@@ -53,7 +122,14 @@ const useStyles = makeStyles(theme => ({
     height: 40
   },
   margin: {
-		margin: theme.spacing(1),
-		width: "90px !important"
-  }
+    margin: theme.spacing(1),
+    width: "90px !important"
+  },
+  user: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row"
+  },
+  username: { color: "white", fontSize: 16 }
 }));

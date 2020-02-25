@@ -3,7 +3,9 @@ import {
   SET_CURRENT_PAGE,
   SET_USER_DATA,
   X_AUTH_TOKEN,
-  OPEN_GIFT
+  OPEN_GIFT,
+  SET_TOPIC_ID,
+  TOGGLE_REFRESH
 } from "../types/types";
 
 
@@ -49,3 +51,14 @@ export const toggleGift = () => {
     type: OPEN_GIFT
   };
 };
+export const setTopicId = (payload) => {
+  return {
+    type: SET_TOPIC_ID,
+    payload
+  };
+}
+export const toggleRefresh = () => {
+  return {
+    type: TOGGLE_REFRESH
+  }
+}

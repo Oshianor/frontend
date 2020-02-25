@@ -6,6 +6,8 @@ export const config = {
 	me: api + "/user",
 	topics: api + "/topic",
 	topicVote: api + "/topic/vote",
+	topicTip: api + "/topic/tips",
+	tipPost: api + "/transaction/tip/topic",
 	favourite: api + "/user/favourite",
 	topTags: "https://tipestry.com/api/topic/top/hashtag"
 }

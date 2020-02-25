@@ -16,7 +16,7 @@ export default function TopHashtag() {
     const clear = setTimeout(async () => {
       const tagData = await Axios.get(config.topTags);
       setTags(tagData.data)
-    }, 10000);
+    }, 2000);
     return () => {
       clearTimeout(clear)
     };
@@ -42,6 +42,8 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap"
   }
