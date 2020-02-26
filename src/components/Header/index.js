@@ -8,6 +8,10 @@ import Container from "@material-ui/core/Container";
 import Fab from "@material-ui/core/Fab";
 import { connect } from "react-redux";
 import { setUserData } from "../../store/actions"
+import Exit from "@material-ui/icons/ExitToApp"
+import IconButton from "@material-ui/core/IconButton";
+import Router from "next/router";
+
 
 
 const mapStateToProps = state => ({
@@ -27,7 +31,8 @@ const Header = (props) => {
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
-    setUserData(null)
+    setUserData(null);
+    Router.push("/login");
   }
 
   const loggedIn = () => {
@@ -46,19 +51,14 @@ const Header = (props) => {
             {user.user.username}
           </Typography>
         </div>
-        <Fab
-          variant="extended"
-          size="small"
-          // color="primary"
-          onClick={handleLogOut}
-          aria-label="Log Out"
-          className={classes.margin}
-        >
-          Log Out
-        </Fab>
+        <IconButton onClick={handleLogOut}>
+          <Exit style={{ color: "white" }} />
+        </IconButton>
       </>
     );
   }
+
+  
 
 
   const notLoggedIn = () => {

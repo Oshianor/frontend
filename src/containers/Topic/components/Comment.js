@@ -67,7 +67,16 @@ const Comment = ({ data }) => {
           </Typography>
         </Box>
         <Box display={"flex"} alignItems={"center"} ml={1}>
-          <p className={classes.value}>{data.content}</p>
+          <p className={classes.value}>
+            {data.content.split("\n").map(function(item, key) {
+              return (
+                <span key={key}>
+                  {item}
+                  <br />
+                </span>
+              );
+            })}
+          </p>
         </Box>
         <Box
           display={"flex"}
@@ -140,7 +149,7 @@ const useStyles = makeStyles(({ spacing, palette }) => {
 			marginLeft: 2,
 			margin: 1,
       fontSize: 14,
-      color: palette.grey[500],
+      color: palette.grey[800],
       textAlign: "left"
     }
   };

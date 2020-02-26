@@ -61,7 +61,7 @@ const CardRoot = (props) => {
   const handleRenderObject = (type) => {
     if (type === "gif") {
       return <Gif url={topic.url} />;
-    } else if (type === "image") {
+    } else if (type === "image" || type === "localImage") {
       return <Image url={topic.url} />;
     } else if (type === "site") {
       return <Site url={topic.url} />;
@@ -108,28 +108,50 @@ const CardRoot = (props) => {
         subheader={moment(topic.createdAt).fromNow()}
       />
       <CardContent>
+
+        {/* post title */}
         <Typography
-          variant="h6"
+          variant="h5"
           href={"/topics/" + topic._id + "/" + nutralizeTitle(topic.title)}
           color="primary"
           component="a"
-          align="left"
+          className={classes.titleLink}
         >
           {topic.title}
         </Typography>
+
+        {/* display text message for text type */}
+        {topic.type === "text" && (
+          <p className={classes.value}>
+            {topic.message.split("\n").map(function(item, key) {
+              return (
+                <span key={key}>
+                  {item}
+                  <br />
+                </span>
+              );
+            })}
+          </p>
+        )}
       </CardContent>
-      <div className={classes.tag} >{handleTagRender()}</div>
+      <div className={classes.tag}>{handleTagRender()}</div>
       {handleRenderObject(topic.type)}
-      <CardContent>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          component="a"
-          align="left"
-        >
-          {topic.url}
-        </Typography>
-      </CardContent>
+
+      {/* hide site url if site is null */}
+      {topic.siteId && (
+        <CardContent>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            component="a"
+            href={"/sites?s=" + topic.siteId.url}
+            align="left"
+          >
+            {topic.url}
+          </Typography>
+        </CardContent>
+      )}
+
       <CardActions disableSpacing>
         <Vote count={topic.votesCount} topicId={topic._id} />
 
@@ -164,7 +186,7 @@ const CardRoot = (props) => {
 const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: 500,
-    margin: theme.spacing(2, .5),
+    margin: theme.spacing(2, 0.5),
     "&:hover": {
       boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)",
       // transform: "scale(1.04)"
@@ -200,6 +222,16 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap"
+  },
+  value: {
+    marginLeft: 2,
+    margin: 1,
+    fontSize: 14,
+    color: theme.palette.grey[800],
+    textAlign: "left"
+  },
+  titleLink: {
+    textAlign: "left"
   }
 }));
 
