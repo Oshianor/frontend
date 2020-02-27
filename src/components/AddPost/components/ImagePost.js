@@ -89,12 +89,16 @@ const ImagePost = props => {
       }
 
       setLoading(true);
+      const tags = [];
+      chipData.forEach(tag => {
+        tags.push(tag.label);
+      });
 
       const formData = new FormData();
       formData.append("img", img);
       formData.append("title", val.title);
       formData.append("message", val.details);
-      // formData.append("title", val.title);
+      formData.append("tags", JSON.stringify(tags));
 
       const upload = await axios({
         method: "post",
@@ -130,7 +134,7 @@ const ImagePost = props => {
       setLoading(true);
       const tags = [];
       chipData.forEach(tag => {
-        tag.push(tag.label);
+        tags.push(tag.label);
       });
 
       const headers = user.token ? { "x-auth-token": user.token } : {};
@@ -193,7 +197,7 @@ const ImagePost = props => {
 
   const handleTagRender = () => {
     return chipData.map(tag => (
-      <TagButton onClick={handleDelete(tag)} key={tag.key} name={tag.label} />
+      <TagButton key={tag.key} name={tag.label} />
     ));
   };
 

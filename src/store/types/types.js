@@ -22,3 +22,8 @@ export const TOGGLE_REFRESH = "TOGGLE_REFRESH";
 export const TOGGLE_COMMENT = "TOGGLE_COMMENT";
 export const GET_COMMENTS = "GET_COMMENTS";
 export const SET_CURRENT_COMMENT_PAGE = "SET_CURRENT_COMMENT_PAGE";
+
+
+// site
+export const GET_SITE = "GET_SITE";
+export const GET_TOPIC_FOR_SITE = "GET_TOPIC_FOR_SITE";

@@ -61,12 +61,14 @@ const CardRoot = (props) => {
   const handleRenderObject = (type) => {
     if (type === "gif") {
       return <Gif url={topic.url} />;
-    } else if (type === "image" || type === "localImage") {
+    } else if (type === "image") {
       return <Image url={topic.url} />;
     } else if (type === "site") {
       return <Site url={topic.url} />;
     } else if (type === "youtube") {
       return <Youtube videoId={topic.youtubeId} />
+    } else if (type === "localImage") {
+      return <Image url={topic.img} />;
     }
   }
 

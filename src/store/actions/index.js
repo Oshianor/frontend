@@ -8,7 +8,9 @@ import {
   SET_SINGLE_TOPIC,
   TOGGLE_COMMENT,
   GET_COMMENTS,
-  SET_CURRENT_COMMENT_PAGE
+  SET_CURRENT_COMMENT_PAGE,
+  GET_SITE,
+  GET_TOPIC_FOR_SITE
 } from "../types/types";
 
 
@@ -33,6 +35,25 @@ export const setSingleTopic = payload => {
     payload
   };
 };
+
+
+
+
+
+// site reducers
+export const setSite = payload => {
+  return {
+    type: GET_SITE,
+    payload
+  };
+};
+export const setTopicForSite = payload => {
+  return {
+    type: GET_TOPIC_FOR_SITE,
+    payload
+  };
+};
+
 
 
 
@@ -89,8 +110,6 @@ export const setCurrenPageComment = payload => {
     payload
   };
 };
-
-
 export const setToggleComment = payload => {
   return {
     type: TOGGLE_COMMENT,

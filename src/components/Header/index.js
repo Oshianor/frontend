@@ -85,7 +85,7 @@ const Header = (props) => {
 
 
   return (
-    <AppBar position="static" elevation={1} className={classes.root}>
+    <AppBar position="fixed" elevation={1} className={classes.root}>
       <Container maxWidth="md">
         <Toolbar>
           <img src="/static/tipcoins/tip-large.png" className={classes.logo} />

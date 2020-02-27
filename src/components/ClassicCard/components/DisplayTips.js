@@ -102,7 +102,7 @@ const styles = theme => ({
     margin: theme.spacing(0, 0.5)
   },
   img: {
-    width: 15
+    width: 25
   },
   num: {
 		fontSize: 15

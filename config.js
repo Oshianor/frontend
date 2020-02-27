@@ -1,10 +1,12 @@
-const api = "http://localhost:5000/api";
-// const api = "http://cn.tipestry.com/api";
+// const api = "http://localhost:5000/api";
+const api = "http://cn.tipestry.com/api";
 
 export const config = {
 	login: api + "/auth",
 	me: api + "/user",
 	topics: api + "/topic",
+	site: api + "/site",
+	siteTopics: api + "/site/topics",
 	uploadImgPost: api + "/topic/img",
 	uploadTextPost: api + "/topic/text",
 	topicVote: api + "/topic/vote",
